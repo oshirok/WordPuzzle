@@ -51,7 +51,7 @@ public class InputHandler implements InputProcessor {
     public boolean touchDragged(int screenX, int screenY, int pointer) {
     	screenX = scaleX(screenX);
     	screenY = scaleY(screenY);
-    	myWorld.getBoard().onDrag(screenX, screenY);
+    	if(screenY > 560 && screenY < 1280) myWorld.getBoard().onDrag(screenX, screenY);
         return true;
     }
 

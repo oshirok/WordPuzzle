@@ -83,13 +83,16 @@ public class GameRenderer {
                 bird.getX(), bird.getY(), bird.getWidth(), bird.getHeight());
         
         // End SpriteBatch*/
-        shapeRenderer.begin(ShapeType.Filled);
-        shapeRenderer.setColor(55 / 255.0f, 80 / 255.0f, 100 / 255.0f, 1);
-        shapeRenderer.rect(0, midPointY, 720, midPointY + 66);
-        shapeRenderer.end();
         batcher.begin();
+        myWorld.getBoard().renderWordList(batcher);
         myWorld.render(batcher);
         batcher.end();
+        shapeRenderer.begin(ShapeType.Filled);
+        shapeRenderer.setColor(55 / 255.0f, 80 / 255.0f, 100 / 255.0f, 1);
+        shapeRenderer.rect(0, 0, 720, 240);
+        shapeRenderer.setColor(55 / 255.0f, 80 / 255.0f, 100 / 255.0f, 1);
+        shapeRenderer.rect(450, 240, 270, 320);
+        shapeRenderer.end();
 
     }
     

@@ -9,6 +9,7 @@ import java.util.Scanner;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.me.Helpers.AssetLoader;
 
 // The handler for the grid of letters. I think this should've been the GameWorld class.
 public class LetterBoard {
@@ -19,16 +20,18 @@ public class LetterBoard {
 	private Scanner reader;
 	private ArrayList<Letter> selectedLetters = new ArrayList<Letter>();
 	private ArrayList<Letter[]> currentWords = new ArrayList<Letter[]>();
+	private ArrayList<String> completedWords = new ArrayList<String>();
+	private final int OFFSET = 1280 - 720;
 	
 	public LetterBoard(int x, int y, int height, int width) throws FileNotFoundException {
-		FileHandle file = Gdx.files.internal("data/dictionary2.txt");
+		FileHandle file = Gdx.files.internal("data/dictionary3.txt");
 		reader = new Scanner(file.read());
 		while(reader.hasNext()) {
 			dictionary.add(reader.nextLine().trim());
 		}
 		for(int i = 0; i < 8; i++) {
 			for(int j = 0; j < 8; j++) {
-				board[i][j] = new Letter(randy.nextInt(26), i * 90, j * 90, false);
+				board[i][j] = new Letter(randy.nextInt(26), i * 90, j * 90 + OFFSET, false);
 			}
 		}
 		String word;
@@ -154,7 +157,7 @@ public class LetterBoard {
 	}
 	
 	public void onDrag(int screenX, int screenY) {
-		Letter returnedLetter = board[screenX/90][screenY/90].selected();
+		Letter returnedLetter = board[screenX/90][(screenY - OFFSET)/90].selected();
 		if(returnedLetter != null) selectedLetters.add(returnedLetter);
 	}
 	
@@ -170,6 +173,7 @@ public class LetterBoard {
 			for(int i = 0; i < selectedLetters.size(); i++) {
 				selectedLetters.get(i).setUsed(false);
 			}
+			completedWords.add(tempString);
 			sweep();
 			updateTracker();
 			System.out.println("" + addWord(board, chooseRandomWord()));
@@ -211,5 +215,15 @@ public class LetterBoard {
 			if(word.equalsIgnoreCase(tempString)) return true;
 		}
 		return false;
+	}
+	
+	public void renderWordList(SpriteBatch batcher) {
+		int i = 0;
+		for(String word:completedWords) {
+			for(int j = 0; j < word.length(); j++) {
+				batcher.draw(AssetLoader.letters[word.charAt(j) - 'a'], j * 40, 240 + (completedWords.size() - 1) * 40 - i * 40, 40, 40);
+			}
+			i++;
+		}
 	}
 }
