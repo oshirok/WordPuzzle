@@ -15,6 +15,7 @@ public class GameWorld {
     }
 
     public void update(float delta) {
+    	board.update();
     }
     
     public LetterBoard getBoard() {

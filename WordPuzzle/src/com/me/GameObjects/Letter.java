@@ -30,14 +30,14 @@ public class Letter {
 	public void render(SpriteBatch batcher) {
 		if(selected) {
 			batcher.setColor(200 / 255.0f, 200 / 255.0f, 255 / 255.0f, 1);
-			batcher.draw(texture, x, y, 90, 90);
+			batcher.draw(texture, x, y, 120, 120);
 			batcher.setColor(1, 1, 1, 1);
 		} else if(first) {
 			batcher.setColor(200 / 255.0f, 200 / 255.0f, 200 / 255.0f, 1);
-			batcher.draw(texture, x, y, 90, 90);
+			batcher.draw(texture, x, y, 120, 120);
 			batcher.setColor(1, 1, 1, 1);
 		}
-		else batcher.draw(texture, x, y, 90, 90);
+		else batcher.draw(texture, x, y, 120, 120);
 		// remove comment for debugging
 		// if(used) batcher.draw(AssetLoader.bird, x, y, 30, 30);
 	}
@@ -85,5 +85,25 @@ public class Letter {
 	
 	public void setFirst(boolean first) {
 		this.first = first;
+	}
+	
+	public TextureRegion getSprite() {
+		return AssetLoader.letters[c];
+	}
+	
+	public int getX() {
+		return x;
+	}
+	
+	public int getY() {
+		return y;
+	}
+	
+	public int getOriginX() {
+		return x + 120 / 2;
+	}
+	
+	public int getOriginY() {
+		return y + 120 / 2;
 	}
 }
