@@ -7,7 +7,7 @@ import com.me.Helpers.AssetLoader;
 
 // Letter is each letter that appears on the screen. There are 64.
 public class Letter {
-	private TextureRegion texture = AssetLoader.bg;
+	private TextureRegion texture;
 	private int c;
 	private int x;
 	private int y;

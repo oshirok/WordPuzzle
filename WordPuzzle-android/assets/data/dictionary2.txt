@@ -7,7 +7,7 @@ Yamagata
 Fukushima
 Ibaraki
 Tochigi 
-Gumma 
+Gunma 
 Chiba 
 Saitama 
 Tokyo 
@@ -21,7 +21,8 @@ Fukui
 Yamanashi 
 Shizuoka 
 Aichi 
-Shiga	 Kyoto 
+Shiga	 
+Kyoto 
 Hyogo 
 Mie 
 Nara 

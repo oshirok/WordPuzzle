@@ -1,8 +1,9 @@
 package com.me.Helpers;
 
+import java.io.FileNotFoundException;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
-import com.me.GameObjects.Bird;
 import com.me.GameWorld.GameWorld;
 
 public class InputHandler implements InputProcessor {
@@ -19,7 +20,14 @@ public class InputHandler implements InputProcessor {
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-    	System.out.println(screenX + "," + screenY);
+    	if(myWorld.currentState == GameWorld.GameState.MENU) {
+    		myWorld.switchInput();
+			//myWorld.start();
+    	} else if(myWorld.currentState == GameWorld.GameState.GAMEOVER) {
+    	} else if(myWorld.currentState == GameWorld.GameState.HELP) {
+    		myWorld.currentState = GameWorld.GameState.MENU;
+    		myWorld.switchInput();
+    	}
         return true; // Return true to say we handled the touch.
     }
 
@@ -43,7 +51,7 @@ public class InputHandler implements InputProcessor {
     	screenX = scaleX(screenX);
     	screenY = scaleY(screenY);
     	// if touchUp in board area
-    	myWorld.getBoard().onTouchUp();
+    	if(myWorld.currentState == GameWorld.GameState.RUNNING) myWorld.getBoard().onTouchUp();
         return true;
     }
 
@@ -51,7 +59,7 @@ public class InputHandler implements InputProcessor {
     public boolean touchDragged(int screenX, int screenY, int pointer) {
     	screenX = scaleX(screenX);
     	screenY = scaleY(screenY);
-    	if(screenY > 320 && screenY < 1280) myWorld.getBoard().onDrag(screenX, screenY);
+    	if(screenY > 320 && screenY < 1280 && myWorld.currentState == GameWorld.GameState.RUNNING) myWorld.getBoard().onDrag(screenX, screenY);
         return true;
     }
 

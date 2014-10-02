@@ -1,58 +1,48 @@
 package com.me.Helpers;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.graphics.g2d.Animation;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 public class AssetLoader {
 
-    public static Texture texture;
-    public static TextureRegion bg, grass;
+    public static Texture textures2, stopCatTexture, helpScreen;
 
     public static Texture lettersTexture;
     public static TextureRegion[] letters = new TextureRegion[26];
-    
-    public static Animation birdAnimation;
-    public static TextureRegion bird, birdDown, birdUp;
 
-    public static TextureRegion skullUp, skullDown, bar;
+    public static TextureRegion arrow, stopCat, help;
 
+    public static BitmapFont font;
+    private static Preferences prefs;
     public static void load() {
-        texture = new Texture(Gdx.files.internal("data/texture.png"));
-        texture.setFilter(TextureFilter.Nearest, TextureFilter.Nearest);
-
-        bg = new TextureRegion(texture, 0, 0, 136, 43);
-        bg.flip(false, true);
-
-        grass = new TextureRegion(texture, 0, 43, 143, 11);
-        grass.flip(false, true);
-
-        birdDown = new TextureRegion(texture, 136, 0, 17, 12);
-        birdDown.flip(false, true);
-
-        bird = new TextureRegion(texture, 153, 0, 17, 12);
-        bird.flip(false, true);
-
-        birdUp = new TextureRegion(texture, 170, 0, 17, 12);
-        birdUp.flip(false, true);
-
-        TextureRegion[] birds = { birdDown, bird, birdUp };
-        birdAnimation = new Animation(0.06f, birds);
-        birdAnimation.setPlayMode(Animation.LOOP_PINGPONG);
-
-        skullUp = new TextureRegion(texture, 192, 0, 24, 14);
-        // Create by flipping existing skullUp
-        skullDown = new TextureRegion(skullUp);
-        skullDown.flip(false, true);
-
-        bar = new TextureRegion(texture, 136, 16, 22, 3);
-        bar.flip(false, true);
+        
+        textures2 = new Texture(Gdx.files.internal("data/textures2.png"));
+        textures2.setFilter(TextureFilter.Nearest, TextureFilter.Nearest);
+        
+        stopCatTexture = new Texture(Gdx.files.internal("data/stop.png"));
+        stopCatTexture.setFilter(TextureFilter.Nearest, TextureFilter.Nearest);
+        
+        helpScreen = new Texture(Gdx.files.internal("data/help.png"));
+        helpScreen.setFilter(TextureFilter.Nearest, TextureFilter.Nearest);
+        
+        arrow = new TextureRegion(textures2, 0, 0, 16, 16);
+        arrow.flip(false, true);
         
         lettersTexture = new Texture(Gdx.files.internal("data/letters.png"));
-        texture.setFilter(TextureFilter.Nearest, TextureFilter.Nearest);
+        lettersTexture.setFilter(TextureFilter.Nearest, TextureFilter.Nearest);
         
+        stopCat = new TextureRegion(stopCatTexture, 0, 0, 1024, 1024);
+        stopCat.flip(false, true);
+        
+        help = new TextureRegion(helpScreen, 0, 0, 720, 1280);
+        help.flip(false,  true);
+        
+        // Load in the letters yay!
         for(int i = 0; i < 4; i++) {
         	for(int j = 0; j < 8; j++) {
         		if(i * 8 + j < 26) {
@@ -61,12 +51,31 @@ public class AssetLoader {
         		}
         	}
         }
+        
+        font = new BitmapFont(Gdx.files.internal("data/text.fnt"));
+		font.setScale(2.5f, -2.5f);
+		
+		// Create and retrieve settings from preferences file
+		prefs = Gdx.app.getPreferences("WordPuzzle");
+
+		if (!prefs.contains("highScore")) {
+			prefs.putInteger("highScore", 0);
+		}
 
     }
     
+    public static void setHighScore(int val, String dictionarySelect) {
+		prefs.putInteger("highScore-" + dictionarySelect, val);
+		prefs.flush();
+	}
+
+	public static int getHighScore(String dictionarySelect) {
+		return prefs.getInteger("highScore-" + dictionarySelect);
+	}
+    
     public static void dispose() {
-        // We must dispose of the texture when we are finished.
-        texture.dispose();
+        // Must dispose textures
+        textures2.dispose();
     }
 
 }
